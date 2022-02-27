@@ -1,0 +1,15 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+build
+dist
+
+# Config
+.idea
+.vscode
+*.spec
+
+# Non-public information
+conf/SECRETS.py
+conf/CLIENT_SECRETS.py

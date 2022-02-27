@@ -1,0 +1,16 @@
+[Unit]
+Description="SPARTAN ping monitor"
+After=network.target
+StartLimitIntervalSec=400
+StartLimitBurst=1
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=60
+User=discord_bot
+WorkingDirectory=/opt/mqtt2osc
+ExecStart=/usr/bin/python3 /opt/mqtt2osc/bot_publisher.py
+
+[Install]
+WantedBy=multi-user.target
