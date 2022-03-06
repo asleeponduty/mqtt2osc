@@ -12,10 +12,26 @@ When a discord bot, IoT device, or *other* publishes to a MQTT topic on an acces
 In this example, a discord bot listening for a role ping will publish a message to an accessible MQTT server.   
 The client subscribes to this topic, and publishes a boolean 'ping' avatar parameter to a running VRChat client on reception. 
 
-## Client:
+## Configuration:
 
-`client_subscriber.py`: The MQTT to OSC bridge. Listens to the configured MQTT topics and publishes accordingly.  
-Hint: This is what you give people
+Make sure you take a look at both `conf/CLIENT_SECRETS.py` and  `conf/SECRETS.py`
+
+- `CLIENT_SECRETS.py`: Used for `client.py`:
+  - `MQTT_CONFIG`:
+    - `address`: The ip or url of the public MQTT server.
+    - `username` and `password`: If your server requrires these, fill them in. Otherwise, delete them.
+  - `CONFIG`:
+    - `publish_topics`: a dictionary mapping MQTT topics to OSC topics. 
+      -  The default `client.py` handler emits `True` to the mapped OSC topic on MQTT message.
+    - `listen_topics`: a dictionary mapping OSC topics to MQTT topics. 
+      - The default `client.py` handler emits a MQTT message if the OSC topic's value was `True`. It then sets the OSC topic to `False`.
+
+## Client Bridge:
+
+`client.py`: The MQTT to OSC bridge. Listens to the configured MQTT topics and publishes accordingly.  
+Hint: Run `pyinstaller --onefile client.py` on this to make an exe
+
+To change behavior, edit the `sample_on_mqtt` and `sample_on_osc` functions.
 
 ### Client Requirements:
 
@@ -23,8 +39,9 @@ Hint: This is what you give people
 - Python3+
 - Pip Packages: `paho-mqtt` and  `python-osc`
 
+If `client.py` is frozen to an exe using pyinstaller, they will not need python installed. 
 
-## Server:
+## Bot Server:
 
 `bot_publisher.py`:  
 Uses a discord bot in a server to monitor a role ping. If present, it publishes to an mqtt topic.  

@@ -1,8 +1,6 @@
 """
-client_subscriber.py
-Sample MQTT->OSC subscriber/publisher to the role-pinging topic.
-This script listens to a publicly readable MQTT* server for a message on a topic. 
-On message, it publishes to OSC if valid.
+client_utils.py
+This script contains wrapper classes for the MQTT to OSC bidirectional bridge
 
 please use `pip install paho-mqtt python-osc` to use this.
 Note that in this script, it's expected that the server is TLS-encrypted

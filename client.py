@@ -1,3 +1,19 @@
+"""
+client.py
+Sample bidirectional MQTT<->OSC subscriber/publisher.
+1. This script listens to a publicly readable MQTT* server for a message on a topic. 
+On message, it publishes to OSC if valid.
+
+2. This script starts an OSC server which handles all incoming messages. 
+If a message appears on a configured topic and it's value is 'True', 
+it publishes a MQTT message to the configured topic and then
+sets the value of the OSC topic to 'False'
+
+please use `pip install paho-mqtt python-osc` to use this.
+Note that in this script, it's expected that the server is TLS-encrypted
+
+@author asleeponduty
+"""
 import struct
 import time
 import paho.mqtt.client as paho
@@ -44,8 +60,8 @@ def sample_on_osc(mqtt2osc: SimpleMQTT2OSC, address, args):
     """
     mqtt_topic = mqtt2osc.listen_topics.get(str(address))
     if mqtt_topic:
-        data_struct = struct.pack("!QQQ", time.time_ns(), MY_UUID, 0)
         if args == True:
+            data_struct = struct.pack("!QQQ", time.time_ns(), MY_UUID, 0)
             mqtt2osc.publish_message(mqtt_topic, data_struct)
             print(f"{address}: published to {mqtt_topic}")
             mqtt2osc.osc.send_message(address, False)
